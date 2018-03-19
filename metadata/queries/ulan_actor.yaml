@@ -1,0 +1,101 @@
+values: "?entity_uri"
+construct: |
+  ?entity_uri a crm:E39_Actor ;
+     rdfs:label                  ?label ;
+     dc:description              ?description ;
+     crm:P1_is_identified_by     _:actor_id_class ;
+     crm:P2_has_type             ?ulan_types;
+     crm:P129i_is_subject_of     _:description_class ;
+     foaf:homepage               ?website_url .
+
+  ######### IDS #########
+  _:actor_id_class a crm:E42_Identifier ;
+    rdfs:label ?identifier ;
+    rdf:value  ?identifier ;
+    crm:P2_has_type aat:300404670 .
+
+  ######### BIOGRAPHY ##########
+  _:description_class a crm:E33_Linguistic_Object ;
+    rdf:value ?description ;
+    crm:P94i_was_created_by ?authorship_event ;
+    crm:P2_has_type aat:300080102 .
+  _:description_class2 a crm:E33_Linguistic_Object ;
+    rdf:value ?scopeNote;
+    crm:P2_has_type aat:300080102 .
+  ?authorship_event a crm:E65_Creation ;
+    crm:P14_carried_out_by ?author_class .
+  ?author_class a crm:E39_Actor ;
+    rdfs:label ?author.
+
+
+
+  ?entity_uri toybox:related_actors _:related_actor.
+  _:related_actor toybox:related_actor ?other_person;
+                  toybox:relationship_label ?relationship_label.
+
+  ######### WEBSITES #########
+  ?website_url rdfs:label ?website_label.
+  ?alt_website_url rdfs:label ?alt_website_label ;
+    foaf:maker ?alt_website_source.
+  ?alt_website_source foaf:name ?alt_website_author.
+
+  ######## PREFERRED ROLE #########
+  ?ulan_types rdfs:label ?role_label.
+
+where: |  
+  {    
+    ?entity_uri skos:prefLabel ?label.
+
+    {
+      ?entity_uri ?relationship ?other_person.
+      ?relationship rdfs:subPropertyOf skos:related;
+        dc:title ?relationship_label.
+    }
+
+    ######### SCOPE NOTE (as bio) ##########
+    UNION {
+      ?entity_uri skos:scopeNote ?scopeNote.
+    }
+
+    UNION {
+      ?entity_uri foaf:focus ?agent.
+
+
+      ######### BIOGRAPHY ##########
+      OPTIONAL {
+        ?entity_uri skos:scopeNote ?scopeNote.
+      }
+      OPTIONAL {
+        ?agent gvp:biographyPreferred ?description_class .
+        ?description_class schema:description ?description .
+        OPTIONAL {
+          ?author_class dcterms:contributor ?author_class .
+          ?author_class foaf:name ?author .
+        }
+      }
+    }
+
+    ####### ULAN TYPES #######
+    UNION {
+      ?entity_uri gvp:agentTypePreferred ?ulan_types .
+      OPTIONAL {
+        ?ulan_types gvp:prefLabelGVP ?role_label_class.
+        ?role_label_class gvp:term ?role_label_with_language.
+        BIND (STR(?role_label_with_language) as ?role_label)
+      }
+    }
+
+    ######### IDS #########
+    UNION {
+      ?entity_uri dc:identifier ?identifier .
+    }
+
+
+    ####### HOMEPAGE #######
+    UNION {
+      ?entity_uri rdfs:seeAlso ?website_url .
+      OPTIONAL {
+        ?website_url rdfs:label ?website_label.
+      }
+    }
+  }

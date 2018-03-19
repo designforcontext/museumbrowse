@@ -1,0 +1,392 @@
+# NOTES:  
+# * Needs sort name:  need to figure out if I need to figure that out
+#     in the model or fix it in the export, here.
+# * You can probably simplify the name parts into a single select, since
+#     it's ok if there's addl. name parts included in the JSON.
+
+
+values: "?entity_uri"
+construct: |
+  ?entity_uri a ?actor_type, crm:E39_Actor ;
+      rdfs:label                  ?label ;
+      dc:description                             ?description ;
+      crm:P2_has_type                            ?gender_class ;
+      skos:exactMatch                            ?lod_identifier;
+      crm:P1_is_identified_by                    ?actor_id_class ;
+      crm:P131_is_identified_by                  ?actor_name_class ;
+      foaf:homepage                              ?website_url ;
+      crm:P129i_is_subject_of                    ?description_class ;
+      foaf:page                                  ?alt_website_url ;
+      crm:P138i_has_representation               ?image ;
+      crm:P92i_was_brought_into_existence_by     ?birth_event;
+      crm:P93i_was_taken_out_of_existence_by     ?death_event;
+      crm:P107i_is_current_or_former_member_of   ?nationality_class .
+
+
+
+    ######### NAME #########
+    ?actor_name_class a crm:E82_Actor_Appellation ;
+      crm:P2_has_type ?actor_name_type ;
+      crm:P106_is_composed_of ?given_name_class ;
+      crm:P106_is_composed_of ?family_name_class ;
+      crm:P106_is_composed_of ?middle_name_class ;
+      crm:P106_is_composed_of ?name_prefix_class ;
+      crm:P106_is_composed_of ?name_suffix_class ;
+      rdf:value ?actor_name .
+
+    ######### BIRTH #########
+    ?birth_event a crm:E63_Beginning_of_Existence;
+        crm:P4_has_time-span ?birth_timespan ;
+        crm:P7_took_place_at ?birth_location_class .
+    ?birth_timespan a crm:E52_Time-Span;
+        crm:P82a_begin_of_the_begin ?earliest_birthdate;
+        crm:P82b_end_of_the_end ?latest_birthdate;
+        rdfs:label ?display_birthdate.
+    ?birth_location_class a crm:E53_Place;
+        rdfs:label ?birth_location.
+
+    ######### DEATH #########
+    ?death_event a crm:E64_End_of_Existence;
+        crm:P4_has_time-span ?death_timespan ;
+        crm:P7_took_place_at ?death_location_class .
+    ?death_timespan a crm:E52_Time-Span;
+        crm:P82a_begin_of_the_begin ?earliest_deathdate;
+        crm:P82b_end_of_the_end ?latest_deathdate;
+        rdfs:label ?display_deathdate.
+    ?death_location_class a crm:E53_Place;
+        rdfs:label ?death_location.
+
+
+    ######### RECONCILED IDS ########
+    ?lod_identifier skos:preflabel ?lod_label;
+      schema:url    ?lod_reference;
+      skos:inScheme ?lod_source.
+
+    ######### GIVEN NAME ##########
+    ?given_name_class a crm:E82_Actor_Appellation ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300404651> ; # note that this is a modification from the spec
+      rdf:value ?given_name .
+
+    ######### FAMILY NAME #########
+    ?family_name_class a crm:E82_Actor_Appellation ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300404652> ; # note that this is a modification from the spec
+      rdf:value ?family_name  .
+
+    ######### MIDDLE NAME #########
+    ?middle_name_class a crm:E82_Actor_Appellation ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300404654> ; # note that this is a modification from the spec
+      rdf:value ?middle_name  .
+
+    ######### NAME PREFIX #########
+    ?name_prefix_class a crm:E82_Actor_Appellation ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300404845> ; # note that this is a modification from the spec
+      rdf:value ?name_prefix  .
+
+    ######### NAME SUFFIX #########
+    ?name_suffix_class a crm:E82_Actor_Appellation ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300404662> ; # note that this is a modification from the spec
+      rdf:value ?name_suffix  .
+
+    ######### IDS #########
+    ?actor_id_class a crm:E42_Identifier ;
+      rdfs:label ?identifier ;
+      rdf:value  ?identifier ;
+      crm:P2_has_type ?identifier_type .
+    ?identifier_type skos:prefLabel ?identifier_type_label.
+
+    ######### WEBSITES #########
+    ?website_url rdfs:label ?website_label.
+    ?alt_website_url rdfs:label ?alt_website_label ;
+      foaf:maker ?alt_website_source.
+    ?alt_website_source foaf:name ?alt_website_author.
+
+    ######### GENDER #########
+    ?gender_class a crm:E55_Type ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300055147> ;
+      rdfs:label ?gender .
+
+    ######### NATIONALITY #########
+    ?nationality_class a crm:E74_Group ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300379842> ;
+      rdfs:label ?nationality .
+
+    ######### BIOGRAPHY ##########
+    ?description_class a crm:E33_Linguistic_Object ;
+      rdf:value ?description ;
+      crm:P94i_was_created_by ?authorship_event ;
+      crm:P2_has_type ?description_type .
+    ?authorship_event a crm:E65_Creation ;
+      crm:P14_carried_out_by ?author_class .
+    ?author_class a crm:E39_Actor ;
+      rdfs:label ?author.
+
+    ######## IMAGE ########
+    ?image a crm:E38_Image ;
+      rdfs:label ?image_description ;
+      crm:P67i_is_referred_to_by ?image_rights_statement_class ;
+      crm:P104_is_subject_to ?image_right .
+    ?image_right a crm:E30_Right .
+    ?image_rights_statement_class a crm:E33_Linguistic_Object ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300055547> ;
+      rdf:value ?image_rights_statement .
+
+
+    # ######## alt_image ########
+    # ?display_work crm:P138i_has_representation ?alt_image .
+    # ?alt_image a crm:E38_Image ;
+    #   rdfs:label ?alt_image_description ;
+    #   crm:P67i_is_referred_to_by ?alt_image_rights_statement_class ;
+    #   crm:P104_is_subject_to ?alt_image_right .
+    # ?alt_image_right a crm:E30_Right .
+    # ?alt_image_rights_statement_class a crm:E33_Linguistic_Object ;
+    #   crm:P2_has_type <http://vocab.getty.edu/aat/300055547> ;
+    #   rdf:value ?alt_image_rights_statement .
+
+where: |      
+  { 
+    ######### CIDOC TYPE #########
+    ?entity_uri a ?actor_type.
+    {?entity_uri a <http://www.cidoc-crm.org/cidoc-crm/E39_Actor>} UNION
+    {?entity_uri a <http://www.cidoc-crm.org/cidoc-crm/E21_Person>} UNION
+    {?entity_uri a <http://www.cidoc-crm.org/cidoc-crm/E74_Group>} UNION
+    {?entity_uri a <http://www.cidoc-crm.org/cidoc-crm/E40_Legal_Body>}
+
+    ######### LABEL #########
+    {
+      ?entity_uri rdfs:label ?label .
+    }
+
+    ######### RECONCILED IDS ########
+    UNION {
+      ?entity_uri skos:exactMatch ?lod_identifier.
+      OPTIONAL {
+        ?lod_identifier skos:preflabel ?lod_label.
+      }
+      OPTIONAL {
+        ?lod_identifier skos:inScheme ?lod_source.
+      }
+      OPTIONAL {
+        ?lod_identifier schema:url ?lod_reference.
+      }
+    }
+
+    ######### NAME #########
+    UNION {
+       ?entity_uri crm:P131_is_identified_by ?actor_name_class .
+       ?actor_name_class a crm:E82_Actor_Appellation ;
+         crm:P2_has_type ?actor_name_type ;
+         rdf:value ?actor_name .
+
+      ######### GIVEN NAME #########
+      OPTIONAL {
+        ?actor_name_class crm:P106_is_composed_of ?given_name_class .
+        ?given_name_class a crm:E82_Actor_Appellation ;
+          rdf:value ?given_name .
+        {
+          ?given_name_class crm:P2_has_type <http://vocab.getty.edu/aat/300404651> .
+        } UNION {
+          ?given_name_class crm:P2_has_type ?given_name_type_class .
+          ?given_name_type_class skos:broadMatch <http://vocab.getty.edu/aat/300404651> .
+        }
+      }
+
+      ######### FAMILY NAME #########
+      OPTIONAL {
+        ?actor_name_class crm:P106_is_composed_of ?family_name_class .
+        ?family_name_class a crm:E82_Actor_Appellation ;
+          rdf:value ?family_name .
+        {
+          ?family_name_class crm:P2_has_type <http://vocab.getty.edu/aat/300404652> .
+        } UNION {
+          ?family_name_class crm:P2_has_type ?family_name_type_class .
+          ?family_name_type_class skos:broadMatch <http://vocab.getty.edu/aat/300404652> .
+        }
+      }
+
+      ######### MIDDLE NAME #########
+      OPTIONAL {
+        ?actor_name_class crm:P106_is_composed_of ?middle_name_class .
+        ?middle_name_class a crm:E82_Actor_Appellation ;
+          rdf:value ?middle_name .
+        {
+          ?middle_name_class crm:P2_has_type <http://vocab.getty.edu/aat/300404654> .
+        } UNION {
+          ?middle_name_class crm:P2_has_type ?middle_name_type_class .
+          ?middle_name_type_class skos:broadMatch <http://vocab.getty.edu/aat/300404654> .
+        }
+      }
+
+      ######### NAME PREFIX #########
+      OPTIONAL {
+        ?actor_name_class crm:P106_is_composed_of ?name_prefix_class .
+        ?name_prefix_class a crm:E82_Actor_Appellation ;
+          rdf:value ?name_prefix .
+        {
+          ?name_prefix_class crm:P2_has_type <http://vocab.getty.edu/aat/300404845> .
+        } UNION {
+          ?name_prefix_class crm:P2_has_type ?name_prefix_type_class .
+          ?name_prefix_type_class skos:broadMatch <http://vocab.getty.edu/aat/300404845> .
+        }
+      }
+
+      ######### NAME SUFFIX #########
+      OPTIONAL {
+        ?actor_name_class crm:P106_is_composed_of ?name_suffix_class .
+        ?name_suffix_class a crm:E82_Actor_Appellation ;
+          rdf:value ?name_suffix .
+        {
+          ?name_suffix_class crm:P2_has_type <http://vocab.getty.edu/aat/300404662> .
+        } UNION {
+          ?name_suffix_class crm:P2_has_type ?name_suffix_type_class .
+          ?name_suffix_type_class skos:broadMatch <http://vocab.getty.edu/aat/300404662> .
+        }
+      }
+    }
+
+    ######### IDS #########
+    UNION {
+      ?entity_uri crm:P1_is_identified_by ?actor_id_class .
+      ?actor_id_class a crm:E42_Identifier ;
+        rdf:value ?identifier .
+      OPTIONAL {
+        ?actor_id_class crm:P2_has_type ?identifier_type .
+        OPTIONAL {
+         ?identifier_type skos:prefLabel ?identifier_type_label .
+        } 
+      }
+    }
+
+    ####### HOMEPAGE #######
+    UNION {
+      ?entity_uri foaf:homepage ?website_url .
+      OPTIONAL {
+        ?website_url rdfs:label ?website_label.
+      }
+    }
+
+    ####### OTHER WEBSITES #######
+    UNION {
+      ?entity_uri foaf:page ?alt_website_url .
+      ?alt_website_url rdfs:label ?alt_website_label .
+      OPTIONAL {
+        ?alt_website_url foaf:maker ?alt_website_source.
+        ?alt_website_source foaf:name ?alt_website_author.  
+      }
+    }
+
+    ######### GENDER #########
+    UNION {
+      ?entity_uri crm:P2_has_type ?gender_class .
+      ?gender_class a crm:E55_Type ;
+        rdfs:label ?gender .
+      {
+        ?gender_class crm:P2_has_type <http://vocab.getty.edu/aat/300055147> .
+      } UNION {
+        ?gender_class crm:P2_has_type ?gender_type_class .
+        ?gender_type_class a crm:E55_Type ;
+          skos:broadMatch <http://vocab.getty.edu/aat/300055147> .
+        OPTIONAL {?gender_type_class skos:prefLabel ?gender_type. }
+      }
+    }
+
+    ######### NATIONALITY #########
+    UNION {
+      ?entity_uri crm:P107i_is_current_or_former_member_of ?nationality_class .
+      ?nationality_class a crm:E74_Group ;
+        rdfs:label ?nationality ;
+        crm:P2_has_type <http://vocab.getty.edu/aat/300379842> .
+    }
+
+    ######### BIOGRAPHY ##########
+    UNION {
+      ?entity_uri crm:P129i_is_subject_of ?description_class .
+      ?description_class a crm:E33_Linguistic_Object ;
+        crm:P2_has_type ?description_type ;
+        rdf:value ?description .
+      OPTIONAL {
+        ?description_class crm:P94i_was_created_by ?authorship_event .
+        ?authorship_event a crm:E65_Creation ;
+          crm:P14_carried_out_by ?author_class .
+        OPTIONAL {
+          ?author_class rdfs:label ?author .
+        }
+      }
+    }
+
+    ######### BIRTH #########
+    UNION {
+      ?entity_uri crm:P92i_was_brought_into_existence_by ?birth_event.
+      ?birth_event a crm:E63_Beginning_of_Existence.
+      OPTIONAL {
+          ?birth_event crm:P4_has_time-span ?birth_timespan.
+          ?birth_timespan a crm:E52_Time-Span;
+            crm:P82a_begin_of_the_begin ?earliest_birthdate;
+            crm:P82b_end_of_the_end ?latest_birthdate.
+          OPTIONAL { ?birth_timespan rdfs:label ?display_birthdate.}
+      }
+      OPTIONAL {
+        ?birth_event crm:P7_took_place_at ?birth_location_class .
+        OPTIONAL {
+          ?birth_location_class a crm:E53_Place;
+            rdfs:label ?birth_location.
+        }
+      }
+    }
+
+    ######### DEATH #########
+    UNION {
+      ?entity_uri crm:P93i_was_taken_out_of_existence_by ?death_event.
+      ?death_event a crm:E64_End_of_Existence.
+      OPTIONAL { 
+        ?death_event crm:P4_has_time-span ?death_timespan.
+        ?death_timespan a crm:E52_Time-Span;
+              crm:P82a_begin_of_the_begin ?earliest_deathdate;
+              crm:P82b_end_of_the_end ?latest_deathdate;
+        OPTIONAL { ?death_timespan rdfs:label ?display_deathdate.}
+      }
+      OPTIONAL {
+        ?death_event crm:P7_took_place_at ?death_location_class .
+        OPTIONAL {
+          ?death_location_class a crm:E53_Place;
+                    rdfs:label ?death_location.
+        }
+      }
+    }
+
+    # ######## alt_image ########
+    # OPTIONAL {
+    #   ?display_work crm:P62_depicts ?entity_uri.
+    #   ?display_work crm:P138i_has_representation ?alt_image .
+    #   ?alt_image a crm:E38_Image .
+    #   OPTIONAL {
+    #     ?alt_image rdfs:label ?alt_image_description .
+    #   }
+    #   OPTIONAL {
+    #     ?alt_image crm:P104_is_subject_to ?alt_image_right .
+    #   }
+    #   OPTIONAL {
+    #     ?alt_image crm:P67i_is_referred_to_by ?alt_image_rights_statement_class .
+    #     ?rights_statement_class a crm:E33_Linguistic_Object ;
+    #       crm:P2_has_type <http://vocab.getty.edu/aat/300055547> ;
+    #       rdf:value ?alt_image_rights_statement .
+    #   }
+    # }
+
+    ######## IMAGE ########
+    UNION {
+      ?entity_uri crm:P138i_has_representation ?image .
+      ?image a crm:E38_Image .
+      OPTIONAL {
+        ?image rdfs:label ?image_description .
+      }
+      OPTIONAL {
+        ?image crm:P104_is_subject_to ?image_right .
+      }
+      OPTIONAL {
+        ?image crm:P67i_is_referred_to_by ?image_rights_statement_class .
+        ?rights_statement_class a crm:E33_Linguistic_Object ;
+          crm:P2_has_type <http://vocab.getty.edu/aat/300055547> ;
+          rdf:value ?image_rights_statement .
+      }
+    }
+  }

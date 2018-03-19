@@ -1,0 +1,15 @@
+%section.container-fluid.toybox
+  .container
+    .row
+      .col-12
+        %h3= title
+    .row
+      .col-12
+        %table.table
+          %thead
+            - headers.each do |header|
+              %th=header
+          - rows.each do |row|
+            %tr
+              -row.each do |value|
+                %td= value

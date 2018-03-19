@@ -1,0 +1,33 @@
+%section.container-fluid.toybox.institution_list
+  .container
+    .row
+      .col-12.col-lg-5
+        %h3 Partner Institutions
+
+    - data.each do |datum|
+      - 
+      -if datum.nil?
+        - puts "cannot find #{id}"
+        - next
+      =link_to "#{settings.redis.get("aac:reverse_lookup:#{datum["id"]}")}.html" do
+        .row.partner.align-items-center
+          .col-1
+            -if datum["schema:logo"]
+              =image_tag datum["schema:logo"], class: "img-fluid"
+
+          .col-12.col-xl-4
+            = datum["label"]
+            .address
+              =datum.dig("contact_point","datumue")
+          - if datum["toybox:related_artwork_count"]
+            .col-md-4.col-xl-2.stat.text-center
+              #{datum["toybox:related_artwork_count"]["@value"].to_i.to_s(:delimited)}
+              %span.stat_label Items
+          - if datum["toybox:related_artist_count"]
+            .col-md-4.col-xl-2.stat.text-center
+              #{datum["toybox:related_artist_count"]["@value"].to_i.to_s(:delimited)}
+              %span.stat_label Creators
+          - if datum["toybox:latest_artwork_date"] || datum["toybox:earliest_artwork_date"]
+            .col-md-4.col-xl-2.stat.text-center
+              #{datum["toybox:earliest_artwork_date"]["@value"]} — #{datum["toybox:latest_artwork_date"] ? datum["toybox:latest_artwork_date"]["@value"] : ""}
+              %span.stat_label Date Range

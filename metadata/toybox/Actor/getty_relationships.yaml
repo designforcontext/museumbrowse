@@ -1,0 +1,14 @@
+values: "?entity_uri"
+
+ask: "?entity_uri ?relationship ?other. ?relationship rdfs:subPropertyOf skos:related."
+
+construct: |
+  ?entity_uri toybox:related_actors _:related_actor.
+  _:related_actor toybox:related_actor ?other_person;
+                  toybox:relationship_label ?relationship_label.
+where: |
+  {
+    ?entity_uri ?relationship ?other_person.
+    ?relationship rdfs:subPropertyOf skos:related;
+      dc:title ?relationship_label.
+  }

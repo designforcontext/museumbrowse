@@ -1,0 +1,39 @@
+values: "?entity_uri"
+
+ask: "?object crm:P52_has_current_owner ?entity_uri"
+
+construct: |
+  ?entity_uri toybox:distinct_artists ?artist.
+  
+
+where: |
+  {
+    ?object a <http://www.cidoc-crm.org/cidoc-crm/E22_Man-Made_Object>;
+          crm:P52_has_current_owner ?entity_uri;
+          crm:P108i_was_produced_by ?third_production.
+     ?third_production crm:P14_carried_out_by ?artist.
+     FILTER NOT EXISTS {?artist skos:exactMatch ?ulan_id}
+  }
+  UNION {
+    
+    # Objects created by an artist with a ulan id
+
+    ?object a <http://www.cidoc-crm.org/cidoc-crm/E22_Man-Made_Object>;
+            crm:P52_has_current_owner ?entity_uri;
+            crm:P108i_was_produced_by ?production.
+    ?production crm:P14_carried_out_by ?artist.
+    ?artist skos:exactMatch ?ulan_id.
+
+    # Where no other object owned by a different institituion has the same ulan
+    
+    FILTER NOT EXISTS {
+      ?other_object a <http://www.cidoc-crm.org/cidoc-crm/E22_Man-Made_Object>;
+              crm:P52_has_current_owner ?other_owner;
+              crm:P108i_was_produced_by ?other_production.
+      ?other_production crm:P14_carried_out_by ?other_artist.
+      ?other_artist skos:exactMatch ?ulan_id.
+      FILTER (?entity_uri != ?other_owner)
+    }
+  }
+
+

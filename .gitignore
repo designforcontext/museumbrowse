@@ -1,0 +1,69 @@
+##------------------------------------------------##
+##            Ignore .DS_store file               ##
+##------------------------------------------------##
+.DS_Store
+
+
+##------------------------------------------------##
+##                 Ignore NPM                     ##
+##------------------------------------------------##
+/node_modules
+npm-debug.log
+
+
+##------------------------------------------------##
+##           Ignore the build files               ##
+##------------------------------------------------##
+/build
+build.zip
+.netlify
+
+
+##------------------------------------------------##
+##        Ignore cache directory content...       ##
+##------------------------------------------------##
+/.sass-cache/*
+/.tmp/*
+/.redis-cache/*
+/.elasticsearch-cache/*
+
+
+##------------------------------------------------##
+##      ...but keep the actual directories        ##
+##------------------------------------------------##
+!*/.gitkeep
+
+
+##------------------------------------------------##
+##   Ignore directories for self-documentation    ##
+##------------------------------------------------##
+/doc
+/coverage
+/.yardoc/*
+development_scripts/*
+
+##------------------------------------------------##
+##            Ignore generated files              ##
+##------------------------------------------------##
+source/public/js/main.js
+source/public/js/manifest.js
+source/public/js/vendor.js
+source/public/sitemap*.xml
+
+
+##------------------------------------------------##
+##            Ignore the actual data              ##
+##------------------------------------------------##
+metadata/ManMadeObject/*
+metadata/Actor/*
+metadata/Type/*
+metadata/Actor_old/*
+metadata/ManMadeObject_old/*
+metadata/*.txt
+metadata/global_results/*.json
+
+
+##------------------------------------------------##
+##       Ignore the .env Environment file         ##
+##------------------------------------------------##
+.env

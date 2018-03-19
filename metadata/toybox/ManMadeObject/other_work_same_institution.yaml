@@ -1,0 +1,8 @@
+values: "?entity_uri"
+construct: "?entity_uri toybox:other_works ?other_work ."
+where: |
+  ?entity_uri crm:P108i_was_produced_by ?production.
+  ?production crm:P14_carried_out_by ?artist.
+  ?other_work crm:P108i_was_produced_by ?another_production.
+  ?another_production crm:P14_carried_out_by ?artist.
+  FILTER (?production != ?another_production)

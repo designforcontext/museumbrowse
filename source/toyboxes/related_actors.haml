@@ -1,0 +1,5 @@
+- list = get_relationship_list(people)
+- if list.length > 0
+  %dl.row
+    - list.each do |reltype, links|
+      = list_item reltype, links, pluralize: false

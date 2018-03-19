@@ -1,0 +1,60 @@
+// Little Top Header
+// Most of this is currently unused, but we're keeping it around
+// in case we reenable this in production.
+#top_header
+  text-align: right
+  padding: 10px 0 6px
+  color: $TOP_HEADER_COLOR
+  .row div:first-child
+    text-align: left
+
+  svg.icon
+    stroke: $TOP_HEADER_COLOR
+
+  .header_items
+    margin-bottom: 0
+
+  li.list-inline-item:not(:last-child) 
+    margin-right: 1rem
+  a:hover
+    color: opacify($TOP_HEADER_COLOR,1)
+    text-decoration: none
+    svg.icon
+      stroke: opacify($TOP_HEADER_COLOR,1)
+
+// This is the main, structural header.
+#main_header
+  padding-top: 20px
+  background-color: $HEADER_BAR_COLOR
+  margin-bottom: 40px
+  nav
+    font-family: 'Josefin Sans', sans-serif
+    text-transform: uppercase
+    font-weight: 300
+    padding: 0 0 0.5em 0
+    margin-top: -20px
+    ul
+      margin-bottom: 0
+    li.list-inline-item:not(:last-child) 
+      margin-right: 3rem
+    .current_link
+      color: $SELECTED_LINK_COLOR
+      font-weight: 400
+
+// This is the
+.searchbox_holder
+  #search_button
+    cursor: pointer
+  .icon
+    fill: $PRIMARY_TEXT_COLOR
+    stroke: none
+  .input-group
+    width: 100%
+  input:focus
+    color: $PRIMARY_TEXT_COLOR
+  .input-group-addon
+    background-color: rgba(255,255,255,.15)
+    border: none
+  .form-control
+    background-color: rgba(255,255,255,.1)
+    border: none

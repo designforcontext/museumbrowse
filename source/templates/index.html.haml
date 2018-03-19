@@ -1,0 +1,22 @@
+%section.container
+
+%section.container
+  .row 
+    .col-12.col-md-9
+      = text
+    %sidebar.col-md-2.offset-xl-1
+      %section
+        .homepage_statistic
+          .value= 14 #data["institution_count"] 
+          .title.secondary Institutions
+        .homepage_statistic
+          .value= data["mmo_count"].to_i.to_s(:delimited)
+          .title.secondary Items
+        .homepage_statistic
+          .value= data["artist_count"].to_i.to_s(:delimited)
+          .title.secondary Creators
+        .homepage_statistic
+          .value= (data["actor_count"].to_i - data["artist_count"].to_i).to_s(:delimited)
+          .title.secondary Related Parties
+          
+= haml :"toyboxes/institution_list", locals: {data: data["institutions"]}, layout: nil

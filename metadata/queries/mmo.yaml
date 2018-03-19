@@ -1,0 +1,617 @@
+values: "?entity_uri"
+construct: |
+  ?entity_uri a crm:E22_Man-Made_Object ;
+    rdfs:label                         ?primary_title_text ;
+    foaf:homepage                      ?website_url ;
+    schema:genre                       ?style_name ;
+    crm:P24i_changed_ownership_through ?acquisition_event ;
+    crm:P102_has_title                 ?alternate_title_class ;
+    crm:P102_has_title                 ?primary_title_class ;
+    crm:P108i_was_produced_by          ?production_event ;
+    crm:P129i_is_subject_of            ?primary_description_class ;
+    crm:P129i_is_subject_of            ?alternate_description_class ;
+    crm:P138i_has_representation       ?image ;
+    crm:P1_is_identified_by            ?accession_number_class ;
+    crm:P1_is_identified_by            ?object_id_class ;
+    crm:P1_is_identified_by            ?alternate_ids;
+    crm:P1_is_identified_by ?preferred_identifier_class;
+    crm:P41i_was_classified_by         ?classification_event ;
+    crm:P41i_was_classified_by         ?style_event;
+    crm:P43_has_dimension              ?dimension_class ;
+    crm:P46_is_composed_of             ?part_class ;
+    crm:P52_has_current_owner          ?owner ;
+    crm:P62_depicts                    ?subject_class ;
+    crm:P65_shows_visual_item          ?inscription_class ;
+    crm:P65_shows_visual_item          ?mark_class ;
+    crm:P67i_is_referred_to_by         ?credit_line_class ;
+    crm:P46i_forms_part_of             ?collection_class ;
+    crm:P67i_is_referred_to_by         ?dimension_reference_class ;
+    crm:P104_is_subject_to             ?object_right ;
+    crm:P45_consists_of                ?material_class ;
+    crm:P67i_is_referred_to_by         ?material_string_class .
+  
+
+
+  ######### PRIMARY TITLE #########
+  ?primary_title_class a crm:E35_Title ;
+    rdf:value ?primary_title_text ;
+    crm:P2_has_type <http://vocab.getty.edu/aat/300404670> ;
+    crm:P1_is_identified_by ?primary_title_id_class.
+  ?primary_title_id_class a crm:E42_Identifier ;
+    crm:P2_has_type <http://vocab.getty.edu/aat/300404012> ;
+    rdf:value ?primary_title_id .
+
+
+  ######### ALTERNATE TITLES #########
+  ?alternate_title_class a crm:E35_Title ;
+    rdf:value ?alternate_title_text ;
+    crm:P2_has_type ?alternate_title_type_class .
+  ?alternate_title_type_class a crm:E55_Type ;
+    skos:prefLabel ?alternate_title_type .
+
+
+  ######### OBJECT ID #########
+  ?object_id_class a crm:E42_Identifier ;
+    rdfs:label ?object_id ;
+    rdf:value  ?object_id ;
+    crm:P2_has_type <http://vocab.getty.edu/aat/300404621> .
+
+  ?preferred_identifier_class a crm:E42_Identifier ;
+      rdfs:label ?preferred_identifier ;
+      rdf:value ?preferred_identifier ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300404670> .
+
+  ######### ALTERNATE IDS #########
+  ?alternate_ids a crm:E42_Identifier ;
+    rdfs:label ?alternate_identifier ;
+    rdf:value  ?alternate_identifier ;
+    crm:P2_has_type ?alternate_identifier_type .
+  ?alternate_identifier_type a crm:E55_Type ;
+    skos:prefLabel ?alternate_identifier_type_label .
+
+  ######### CREATION #########
+  ?production_event a crm:E12_Production ;
+    crm:P4_has_time-span ?production_timespan. 
+  ?production_timespan a crm:E52_Time-Span;
+    crm:P82a_begin_of_the_begin ?earliest_date;
+    crm:P82b_end_of_the_end ?latest_date;
+    rdfs:label ?display_date.   
+
+
+  ######### CREATOR #########
+  ?production_event crm:P14_carried_out_by ?actor_class .
+  ?actor_class a ?actor_type ;
+    rdfs:label ?actor_name.
+
+  ######### CREATION LOCATION #########
+  ?production_event crm:P7_took_place_at ?creation_location_class .
+  ?creation_location_class a crm:E53_Place ;
+    rdfs:label ?creation_location.
+
+
+  ######### ACCESSION NUMBER #########
+  ?accession_number_class a crm:E42_Identifier ;
+    rdfs:label ?identifier ;
+    rdf:value  ?identifier ;
+    crm:P2_has_type <http://vocab.getty.edu/aat/300312355> . 
+
+
+  ######### CLASSIFICATION #########
+  ?classification_event a crm:E17_Type_Assignment ;
+    crm:P21_had_general_purpose <http://vocab.getty.edu/aat/300179869> ;
+    crm:P42_assigned ?classification_class .
+  ?classification_class a crm:E55_Type;
+    rdfs:label ?classification_name .
+
+
+  ######### SUBJECT #########
+  ?subject_class rdfs:label ?subject_name .
+
+
+  ######### CREDIT_LINE #########
+  ?credit_line_class a crm:E33_Linguistic_Object;
+    crm:P2_has_type <http://vocab.getty.edu/aat/300026687>;  
+    rdf:value ?credit_line .
+
+
+  ######### MEDIUM_STATEMENT #########
+  ?material_string_class a crm:E33_Linguistic_Object ;
+    crm:P2_has_type <http://vocab.getty.edu/aat/300264237> ;
+    rdf:value ?material_string .
+
+
+  ######### DIMENSIONS STATEMENT #########
+  ?dimension_reference_class a crm:E33_Linguistic_Object ;
+    crm:P2_has_type <http://vocab.getty.edu/aat/300266036> ;  
+    rdf:value ?dimension_reference .
+
+
+  ######### DIMENSIONS #########
+  ?dimension_class a crm:E54_Dimension ;
+    rdf:value ?dimension_value ;
+    crm:P91_has_unit ?dimension_unit ;
+    crm:P2_has_type ?dimension_type.
+  ?dimension_type skos:prefLabel ?dimension_name.
+  ?dimension_unit rdfs:label ?dimension_unit_label.
+  
+  ######### DIMENSION PARTS #########
+  ?part_class a crm:E18_Physical_Thing ;
+    rdfs:label ?part_name;
+    crm:P2_has_type ?part_type;
+    crm:P43_has_dimension ?part_dimension_class .
+  ?part_dimension_class a crm:E54_Dimension ;
+    rdf:value ?part_dimension_value ;
+    crm:P91_has_unit ?part_dimension_unit ;
+    crm:P2_has_type ?part_dimension_type.
+  ?part_dimension_type skos:prefLabel ?part_dimension_name.
+  ?part_dimension_unit rdfs:label ?part_dimension_unit_label.
+
+
+
+  ######### MARKS #########
+  ?mark_class a crm:E37_Mark ;
+    rdf:value ?mark .
+
+
+  ######### INSCRIPTIONS #########
+  ?inscription_class a crm:E34_Inscription ;
+    rdf:value ?inscription .
+
+
+  ######### PRIMARY DESCRIPTION #########
+  ?primary_description_class a crm:E33_Linguistic_Object ;
+    rdf:value ?description ;
+    crm:P94i_was_created_by ?authorship_event ;
+    crm:P2_has_type <http://vocab.getty.edu/aat/300404670> ;
+    crm:P2_has_type <http://vocab.getty.edu/aat/300080091> .
+  ?authorship_event a crm:E65_Creation ;
+      crm:P14_carried_out_by ?author_class .
+  ?author_class a crm:E39_Actor ;
+      rdfs:label ?author .
+
+  ######### ALTERNATE DESCRIPTION #########
+  ?alternate_description_class a crm:E33_Linguistic_Object ;
+    rdf:value ?alt_description ;
+    crm:P2_has_type <http://vocab.getty.edu/aat/300080091> ;
+    crm:P94i_was_created_by ?alt_desc_authorship_event .
+  ?alt_desc_authorship_event a crm:E65_Creation ;
+      crm:P14_carried_out_by ?alt_desc_author_class .
+  ?alt_desc_author_class a crm:E39_Actor ;
+      rdfs:label ?alt_desc_author .
+
+  ######### IMAGE #########
+  ?image a crm:E38_Image ;
+    rdfs:label ?image_description ;
+    rdf:value ?image_value ;
+    crm:P67i_is_referred_to_by ?image_rights_statement_class ;
+    crm:P104_is_subject_to ?image_right_class .
+  ?image_right a crm:E30_Right .
+  ?image_rights_statement_class a crm:E33_Linguistic_Object ;
+    crm:P2_has_type <http://vocab.getty.edu/aat/300055547> ;
+    rdf:value ?image_rights_statement .
+
+
+  ######### WEBSITE #########
+  ?website_url rdfs:label ?website_label.
+
+
+  ######### WEBSITE #########
+  ?owner rdfs:label ?owner_name ;
+    skos:exactMatch ?owner_lod_identifier . 
+
+
+  ######### ACQUISITION #########
+  ?acquisition_event a crm:E8_Acquisition ;
+    crm:P22_transferred_title_to ?owner ;
+    crm:P4_has_time-span ?acquisition_timespan . 
+  ?acquisition_timespan a crm:E52_Time-Span ; 
+    crm:P82a_begin_of_the_begin ?acquisition_earliest_date ;
+    crm:P82b_end_of_the_end ?acquisition_latest_date ; 
+    crm:P3_has_note ?display_date . 
+
+  ######### OBJECT RIGHT #########
+  ?object_right a crm:E30_Right ;
+    crm:P3_has_note ?object_rights_text .
+
+  ######### DEPARTMENT AND COLLECTION #########
+  ?collection_class a crm:E19_Physical_Object ;
+    rdfs:label ?collection_name ;
+    crm:P49_has_former_or_current_keeper ?department_class .
+  ?department_class a crm:E74_Group ;
+    crm:P2_has_type <http://vocab.getty.edu/aat/300263534> ;
+    crm:P107i_is_current_or_former_member_of ?institution;
+    rdfs:label ?department_name .
+
+  ######### MATERIAL #########
+  ?material_class a crm:E57_Material ;
+    skos:broadMatch ?lod_material_term ;
+    skos:prefLabel ?material_name .
+
+  ######### STYLE OR PERIOD #########
+  ?style_event a crm:E17_Type_Assignment;
+    crm:P21_had_general_purpose <http://vocab.getty.edu/aat/300015646> ;
+    crm:P42_assigned ?style_class.
+  ?style_class a crm:E55_Type;
+    rdfs:label ?style_name . 
+
+
+where: |      
+  ?entity_uri a crm:E22_Man-Made_Object.
+
+
+  ######### PRIMARY TITLE #########
+   {
+    ?entity_uri crm:P102_has_title ?primary_title_class .
+    ?primary_title_class a crm:E35_Title ;
+      rdf:value ?primary_title_text ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300404670> .
+    OPTIONAL {
+      ?primary_title_class crm:P1_is_identified_by ?primary_title_id_class.
+      ?primary_title_id_class a crm:E42_Identifier;
+        crm:P2_has_type <http://vocab.getty.edu/aat/300404012> ;
+        rdf:value ?primary_title_id .
+    }
+  }
+
+
+  ######### ALTERNATE TITLES #########
+  UNION {
+    ?entity_uri crm:P102_has_title ?alternate_title_class .
+    ?alternate_title_class a crm:E35_Title ;
+      rdf:value  ?alternate_title_text .
+    OPTIONAL {
+      ?alternate_title_class crm:P2_has_type ?alternate_title_type_class . 
+      ?alternate_title_type_class a crm:E55_Type ;
+        skos:prefLabel ?alternate_title_type .
+    }
+    FILTER NOT EXISTS {?alternate_title_type_class crm:P2_has_type <http://vocab.getty.edu/aat/300404012> .}
+  }
+
+
+  ######### OBJECT ID #########
+  UNION {
+    ?entity_uri crm:P1_is_identified_by ?object_id_class.
+    ?object_id_class a crm:E42_Identifier ;
+      rdf:value ?object_id ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300404621> .
+  }
+
+  ######### OBJECT ID #########
+  UNION {
+    ?entity_uri crm:P1_is_identified_by ?preferred_identifier_class.
+    ?preferred_identifier_class a crm:E42_Identifier ;
+      rdf:value ?preferred_identifier ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300404670> .
+  }
+
+  ######### ALTERNATE IDS #########
+  UNION {
+    ?entity_uri crm:P1_is_identified_by ?alternate_ids .
+    ?alternate_ids a crm:E42_Identifier ;
+      rdfs:value ?alternate_identifier .
+    
+    FILTER NOT EXISTS { ?alternate_ids crm:P2_has_type <http://vocab.getty.edu/aat/300404621>}
+    FILTER NOT EXISTS { ?alternate_ids crm:P2_has_type <http://vocab.getty.edu/aat/300312355>}
+    FILTER NOT EXISTS { ?alternate_ids crm:P2_has_type <http://vocab.getty.edu/aat/300404670>}
+
+    OPTIONAL {
+     ?alternate_ids crm:P2_has_type ?alternate_identifier_type .
+     OPTIONAL {
+       ?alternate_identifier_type skos:prefLabel ?alternate_identifier_type_label .
+     } 
+    }
+  }
+
+
+
+  ######### CREATION #########  
+  UNION {
+    {
+      ?entity_uri crm:P108i_was_produced_by ?production_event .
+    } UNION {
+      ?production_event crm:P108_has_produced ?entity_uri .
+    } UNION {
+      ?entity_uri crm:P108i_was_produced_by ?intermediate_event .
+      ?intermediate_event crm:P9_consists_of ?production_event .
+    }
+    ?production_event a crm:E12_Production ;
+      crm:P4_has_time-span ?production_timespan. 
+    ?production_timespan a crm:E52_Time-Span.
+    OPTIONAL {
+      {
+       ?production_timespan crm:P82a_begin_of_the_begin ?earliest_date.
+       ?production_timespan crm:P82b_end_of_the_end ?latest_date.
+      } UNION {
+        ?production_timespan crm:P82_at_some_time_within ?earliest_date.
+        ?production_timespan crm:P82_at_some_time_within ?latest_date.
+      }
+    }
+    OPTIONAL {
+      {
+        ?production_timespan crm:P3_has_note ?display_date. 
+      } UNION {
+        ?production_timespan skos:prefLabel ?display_date. 
+      } UNION {
+        ?production_timespan rdfs:label ?display_date. 
+      }
+    }
+  }
+
+  ######### CREATION LOCATION #########
+  UNION {
+    ?entity_uri crm:P108i_was_produced_by ?production_event.
+    ?production_event crm:P7_took_place_at ?creation_location_class .
+    OPTIONAL {
+      ?creation_location_class a crm:E53_Place ;
+        rdfs:label ?creation_location.
+    }
+  }
+
+  ######### CREATOR #########
+  UNION {
+    ?entity_uri crm:P108i_was_produced_by ?production_event.
+    ?production_event crm:P14_carried_out_by ?actor_class .
+    OPTIONAL {
+      ?actor_class a ?actor_type .
+    }
+    OPTIONAL {
+      ?actor_class rdfs:label ?actor_name.
+    }
+  }
+
+
+  ######### ACCESSION NUMBER #########
+  UNION {
+    ?entity_uri crm:P1_is_identified_by ?accession_number_class .
+    ?accession_number_class a crm:E42_Identifier ;
+      rdf:value ?identifier ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300312355> .
+  }
+
+
+  ######### CLASSIFICATION #########
+  UNION {
+    ?entity_uri crm:P41i_was_classified_by ?classification_event.
+    ?classification_event a crm:E17_Type_Assignment;
+      crm:P21_had_general_purpose <http://vocab.getty.edu/aat/300179869> ;
+      crm:P42_assigned ?classification_class.
+    OPTIONAL {
+      ?classification_class rdfs:label ?classification_name.
+    }
+  }
+
+
+  ######### SUBJECT #########
+  UNION {
+    ?entity_uri crm:P62_depicts ?subject_class .
+    OPTIONAL {
+            {?subject_class rdfs:label      ?subject_name .}
+      UNION {?subject_class skos:prefLabel  ?subject_name .}
+      UNION {?subject_class crm:P3_has_note ?subject_name .}
+    }
+  }
+  
+
+  ######### CREDIT_LINE #########
+  UNION {
+    ?entity_uri crm:P67i_is_referred_to_by ?credit_line_class .
+    ?credit_line_class a crm:E33_Linguistic_Object;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300026687> ;
+      rdf:value ?credit_line .
+  }
+
+
+  ######### MEDIUM_STATEMENT #########
+  UNION {
+    ?entity_uri crm:P67i_is_referred_to_by ?material_string_class .
+    ?material_string_class a crm:E33_Linguistic_Object ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300264237> ;
+      rdf:value ?material_string .
+  }
+
+
+  ######### DIMENSIONS STATEMENT #########
+  UNION {
+    ?entity_uri crm:P67i_is_referred_to_by ?dimension_reference_class .
+    ?dimension_reference_class a crm:E33_Linguistic_Object;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300266036> ;
+      rdf:value ?dimension_reference .
+  }
+
+
+  ######### DIMENSIONS #########
+  UNION {
+    ?entity_uri crm:P43_has_dimension ?dimension_class .
+    ?dimension_class a crm:E54_Dimension ;
+      rdf:value ?dimension_value ;
+      crm:P91_has_unit ?dimension_unit ;
+      crm:P2_has_type ?dimension_type .
+    OPTIONAL {
+      ?dimension_type skos:prefLabel ?dimension_name.
+    }
+    OPTIONAL {
+        ?dimension_unit rdfs:label ?dimension_unit_label.
+    }
+  }  
+
+
+  ######### DIMENSION PARTS #########
+  UNION {
+    ?entity_uri crm:P46_is_composed_of ?part_class.
+    ?part_class a crm:E18_Physical_Thing ;
+      crm:P43_has_dimension ?part_dimension_class .
+    ?part_dimension_class a crm:E54_Dimension ;
+      rdf:value ?part_dimension_value ;
+      crm:P91_has_unit ?part_dimension_unit ;
+      crm:P2_has_type ?part_dimension_type .
+    OPTIONAL {
+      ?part_dimension_type skos:prefLabel ?part_dimension_name.
+    }
+    OPTIONAL {
+      ?part_class crm:P2_has_type ?part_type.
+    }
+    OPTIONAL {
+      ?part_class rdfs:label ?part_name.
+    }
+    OPTIONAL {
+      ?part_dimension_unit rdfs:label ?part_dimension_unit_label.
+    }
+    OPTIONAL {
+      ?part_dimension_unit skos:prefLabel ?part_dimension_unit_label.
+    }
+  }
+
+
+  ######### MARKS #########
+  UNION {
+    ?entity_uri crm:P65_shows_visual_item ?mark_class .
+    ?mark_class a crm:E37_Mark.
+    {
+      ?mark_class crm:P3_has_note ?mark. 
+    } UNION {
+      ?mark_class rdf:value ?mark. 
+    }
+  }
+
+
+  ######### INSCRIPTIONS #########
+  UNION {
+    ?entity_uri crm:P65_shows_visual_item ?inscription_class .
+    ?inscription_class a crm:E34_Inscription.
+    {
+      ?inscription_class crm:P3_has_note ?inscription. 
+    } UNION {
+      ?inscription_class rdf:value ?inscription. 
+    }
+  }
+
+
+  ######### PRIMARY DESCRIPTION #########
+  UNION {
+    ?entity_uri crm:P129i_is_subject_of ?primary_description_class .
+    ?primary_description_class a crm:E33_Linguistic_Object ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300404670> ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300080091> ;
+      rdf:value ?description .
+    OPTIONAL {
+      ?primary_description_class crm:P94i_was_created_by ?authorship_event .
+      ?authorship_event a crm:E65_Creation ;
+        crm:P14_carried_out_by ?author_class .
+      ?author_class a crm:E39_Actor;
+        rdfs:label ?author .
+    }
+  }
+
+  ######### ALTERNATE DESCRIPTION #########
+  UNION {
+    ?entity_uri crm:P129i_is_subject_of ?alternate_description_class .
+    ?alternate_description_class a crm:E33_Linguistic_Object ;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300080091> ;
+      rdf:value ?alt_description .
+    OPTIONAL {
+      ?alternate_description_class crm:P94i_was_created_by ?alt_desc_authorship_event .
+      ?alt_desc_authorship_event a crm:E65_Creation ;
+        crm:P14_carried_out_by ?alt_desc_author_class .
+      ?alt_desc_author_class a crm:E39_Actor;
+        rdfs:label ?alt_desc_author .
+    }
+    FILTER NOT EXISTS {?alternate_description_class crm:P2_has_type <http://vocab.getty.edu/aat/300404670> }
+  }
+
+  ######### IMAGE #########
+  UNION {
+    ?entity_uri crm:P138i_has_representation ?image .
+    ?image a crm:E38_Image .
+    OPTIONAL {
+      ?image rdfs:label ?image_description .
+    }
+    OPTIONAL {
+      ?image rdf:value ?image_value .
+    }
+    OPTIONAL {
+      ?image crm:P104_is_subject_to ?image_right_class .
+      ?image_right_class a crm:E30_Right .
+    }
+    OPTIONAL {
+      ?image crm:P67i_is_referred_to_by ?image_rights_statement_class .
+      ?image_rights_statement_class a crm:E33_Linguistic_Object ;
+        crm:P2_has_type <http://vocab.getty.edu/aat/300055547> ;
+        rdf:value ?image_rights_statement .
+    }
+  }
+
+
+  ######### WEBPAGE #########
+  UNION {
+    ?entity_uri foaf:homepage ?website_url.
+    OPTIONAL {
+      ?website_url rdfs:label ?website_url_label.
+    }
+  }
+
+
+  ######### OWNER #########
+  UNION {
+    ?entity_uri crm:P52_has_current_owner ?owner.
+    ?owner rdfs:label ?owner_name.
+    OPTIONAL {
+      ?owner skos:exactMatch ?owner_lod_identifier . 
+    }
+  }
+
+  ######### ACQUISITION #########
+  UNION {
+    ?entity_uri crm:P52_has_current_owner ?owner ;
+      crm:P24i_changed_ownership_through ?acquisition_event .
+    ?acquisition_event a crm:E8_Acquisition ;
+      crm:P22_transferred_title_to ?owner ;
+      crm:P4_has_time-span ?acquisition_timespan . 
+    ?acquisition_timespan a crm:E52_Time-Span.
+    OPTIONAL {?acquisition_timespan crm:P82a_begin_of_the_begin ?earliest_date.}
+    OPTIONAL {?acquisition_timespan crm:P82b_end_of_the_end ?latest_date. }
+    OPTIONAL {?acquisition_timespan crm:P3_has_note ?display_date. }
+  }
+
+  ######### OBJECT RIGHT #########
+  UNION {
+    ?entity_uri crm:P104_is_subject_to ?object_right .
+    ?object_right a crm:E30_Right.
+    OPTIONAL { ?object_right crm:P3_has_note ?object_rights_text .}
+  }
+
+  ######### COLLECTION AND DEPARTMENT #########
+  UNION {
+    ?entity_uri crm:P46i_forms_part_of ?collection_class .
+    ?collection_class a crm:E19_Physical_Object ;
+      crm:P49_has_former_or_current_keeper ?department_class .
+    ?department_class a crm:E74_Group;
+      crm:P2_has_type <http://vocab.getty.edu/aat/300263534> ;
+      rdfs:label ?department_name .
+    OPTIONAL {
+      ?collection_class rdfs:label ?collection_name .
+    }
+    OPTIONAL {
+      ?department_class crm:P107i_is_current_or_former_member_of ?institution.
+    }
+  }
+
+  ######### MATERIAL #########
+  UNION {
+    ?entity_uri crm:P45_consists_of ?material_class .
+    ?material_class a crm:E57_Material ;
+      skos:prefLabel ?material_name .
+    OPTIONAL {
+      ?material_class skos:broadMatch ?lod_material_term .
+    }
+  }
+
+  ######### STYLE OR PERIOD #########
+  UNION {
+    ?entity_uri crm:P41i_was_classified_by ?style_event.
+    ?style_event a crm:E17_Type_Assignment;
+      crm:P21_had_general_purpose <http://vocab.getty.edu/aat/300015646> ;
+      crm:P42_assigned ?style_class.
+    OPTIONAL {
+      ?style_class rdfs:label ?style_name.
+    }
+  }

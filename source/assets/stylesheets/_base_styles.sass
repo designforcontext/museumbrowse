@@ -1,0 +1,86 @@
+html
+  background: $BACKGROUND_COLOR
+  background-image: url("/images/page_elements/logo.png")
+  background-repeat: no-repeat
+  background-position: 400px 30px
+  background-size: 126px auto
+  position: relative
+  min-height: 100%
+
+body
+  background-color: transparent
+  color: $PRIMARY_TEXT_COLOR
+  font-family: $BODY_FONT
+  margin-bottom: $FOOTER_HEIGHT
+
+// Header Styles
+h1,h2,h3,h4,h5,h6
+  font-family: $HEADER_FONT
+  text-transform: uppercase
+  font-weight: 300
+
+h1
+  font-size: 2.25rem
+  // margin-bottom: 1.75rem
+
+h2
+  font-size: 1.75rem
+  font-weight: 400
+  margin-bottom: 1rem
+  margin-top: 0.3rem
+
+h3
+  font-size: 1.5rem
+
+h4
+  font-size: 1.33rem
+
+h4
+  font-size: 1.25rem
+
+
+// Body Text Styles
+p
+  color: $BODY_TEXT_COLOR
+  margin-bottom: 1.5rem
+
+p a
+  color: $BODY_LINK_COLOR
+
+p:empty
+  display: none
+
+a, .current_link
+  color:  inherit
+  &:hover
+    color:  inherit
+
+.external_link
+  svg.icon
+    display: inline
+    fill: $BODY_LINK_COLOR
+    stroke: none
+    height: 1em
+    vertical-align: text-top
+
+// Structural Sections 
+section
+  margin-bottom: 3em
+
+// Helper Clases
+.secondary
+  opacity: 0.75
+
+.hidden
+  display: none
+
+.code-error
+  background-color: red
+  color: white
+  font-size: 60%
+  border-radius: 4px
+  padding: 2px
+  display: inline-block
+  margin-bottom: 2px
+  vertical-align: middle
+

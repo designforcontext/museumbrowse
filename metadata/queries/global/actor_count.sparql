@@ -1,0 +1,11 @@
+SELECT (COUNT (DISTINCT ?person) as ?actor_count)
+
+WHERE { 
+  {?person a <http://www.cidoc-crm.org/cidoc-crm/E39_Actor>} UNION
+  {?person a <http://www.cidoc-crm.org/cidoc-crm/E21_Person>} UNION
+  {?person a <http://www.cidoc-crm.org/cidoc-crm/E74_Group>} UNION
+  {?person a <http://www.cidoc-crm.org/cidoc-crm/E40_Legal_Body>}
+  FILTER isIRI(?person)
+  FILTER NOT EXISTS {?person <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://vocab.getty.edu/aat/300379842>}
+  FILTER NOT EXISTS {?person <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://vocab.getty.edu/aat/300263534>}
+}

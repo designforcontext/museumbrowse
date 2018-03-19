@@ -1,0 +1,37 @@
+values: "?entity_uri"
+
+ask: "?object crm:P52_has_current_owner ?entity_uri"
+
+construct: |
+  ?entity_uri toybox:earliest_artwork_date ?earliest;
+              toybox:latest_artwork_date ?latest;
+
+where: |
+  {
+   
+    {
+      SELECT (MIN(YEAR(?earliest_date)) AS ?earliest)
+      WHERE {
+        ?object crm:P52_has_current_owner ?entity_uri.
+        ?object crm:P108i_was_produced_by ?production_event.
+        ?production_event crm:P4_has_time-span ?production_timespan. 
+        ?production_timespan a crm:E52_Time-Span;
+          crm:P82a_begin_of_the_begin ?earliest_date.
+        FILTER (datatype(?earliest_date) = xsd:date )
+        FILTER (YEAR(?earliest_date) != "" )
+       }
+    }
+
+    {
+      SELECT (MAX(YEAR(?latest_date)) AS ?latest)
+      WHERE {
+        ?object crm:P52_has_current_owner ?entity_uri.
+        ?object crm:P108i_was_produced_by ?production_event.
+        ?production_event crm:P4_has_time-span ?production_timespan. 
+        ?production_timespan a crm:E52_Time-Span;
+          crm:P82b_end_of_the_end ?latest_date.
+        FILTER (datatype(?latest_date) = xsd:date )
+        FILTER (YEAR(?latest_date) != "" )
+       }
+    }
+  }

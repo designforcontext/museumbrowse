@@ -1,0 +1,33 @@
+values: "?entity_uri"
+
+ask: "?work crm:P62_depicts ?entity_uri"
+
+construct: |
+  ?entity_uri crm:P62i_is_depicted_by ?work.
+  ?work a ?type;
+    crm:P52_has_current_owner ?owner;
+    crm:P108i_was_produced_by ?production;
+    rdfs:label ?artwork_title.
+  ?production crm:P14_carried_out_by ?artist.
+  ?production crm:P4_has_time-span ?timespan.
+  ?artist rdfs:label ?artist_label.
+  ?timespan rdfs:label ?production_date.
+  ?owner rdfs:label ?owner_label.
+
+where: |
+  ?work a ?type;
+    crm:P62_depicts ?entity_uri;
+    crm:P108i_was_produced_by ?production;
+    crm:P52_has_current_owner ?owner.
+  ?owner rdfs:label ?owner_label.
+  OPTIONAL {
+    ?work rdfs:label ?artwork_title.
+  }
+  OPTIONAL {
+    ?production crm:P4_has_time-span ?timespan.
+    ?timespan rdfs:label ?production_date.
+  }
+  OPTIONAL {
+    ?production crm:P14_carried_out_by ?artist.
+    ?artist rdfs:label ?artist_label.
+  }

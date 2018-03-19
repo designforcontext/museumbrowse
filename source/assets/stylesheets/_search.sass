@@ -1,0 +1,85 @@
+
+#search
+
+  margin-bottom: 3rem
+  h1
+    font-size: 1rem
+    margin: 0 5px
+
+  header, footer
+    text-align: center
+  .row
+    background-color: $WELL_2_COLOR
+    padding: 20px
+    color: $WELL_TEXT_COLOR
+    .subhead
+      font-size: 1rem
+      color: $WELL_2_HEADER_COLOR
+
+    &:first-child
+      border-radius: 5px  5px 0 0
+      padding: 5px 20px
+    &:last-child
+      border-radius: 0 0 5px 5px
+      padding: 5px 20px
+
+.no_description
+  color: #999
+  font-style: italic
+
+.img-placeholder
+  height: 100%
+  min-height: 6em
+  width: 70%
+  opacity: 0.3
+.result_type
+  float: right
+  background: white
+  padding: 3px 6px
+  color: $WELL_TEXT_COLOR
+  font-weight: normal
+  font-size: 80%
+  margin-left: 3px
+  
+.search_metadata > div
+  padding-bottom: 0.5em
+.result
+  border-bottom: 1px solid $WELL_1_BORDER_COLOR
+  font-size: 90%
+  h2
+    font-size: 1rem
+    color: $SEARCH_COLOR
+    font-weight: bold
+    margin-bottom: 10px
+
+
+  .first_block
+    margin-bottom: 20px
+  .second_block
+    color: $SEARCH_COLOR
+    font-weight: bold
+  .item_spacer
+    padding: 5px
+    color:  darken($BACKGROUND_COLOR,10)
+  .creator
+    color: $WELL_TEXT_COLOR
+    font-weight: bold
+
+
+  .img-holder
+    text-align: center
+  .img-thumbnail
+    max-height: 200px
+    border: none
+  .debug
+    display: none
+
+.pagination
+  align-items: center
+  justify-content: center
+  margin: 0 5px
+  .page-link
+    color: darken($BACKGROUND_COLOR,10)
+  .page-item.active .page-link
+    background-color: $BACKGROUND_COLOR
+    border-color: darken($BACKGROUND_COLOR,10)

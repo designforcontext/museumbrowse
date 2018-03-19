@@ -1,0 +1,13 @@
+values: "?entity_uri"
+
+ask: "?object crm:P52_has_current_owner ?entity_uri"
+
+construct: |
+  ?entity_uri toybox:related_artwork_count ?object_count.
+
+where: |
+  {
+    {
+      SELECT ( COUNT(DISTINCT ?object) as ?object_count) WHERE { ?object crm:P52_has_current_owner ?entity_uri.}
+    }
+  }

@@ -1,0 +1,10 @@
+values: "?entity_uri"
+construct: "?entity_uri toybox:works_other_institution ?other_work ."
+where: |
+  ?entity_uri crm:P108i_was_produced_by ?production.
+  ?production crm:P14_carried_out_by ?artist.
+  ?artist skos:exactMatch ?lod_uri.
+  ?other_work crm:P108i_was_produced_by ?another_production.
+  ?another_production crm:P14_carried_out_by ?same_artist.
+  ?same_artist skos:exactMatch ?lod_uri.
+  FILTER (?same_artist != ?artist)

@@ -1,0 +1,73 @@
+- content_for :title_text do
+  = "#{get_object_title(obj)}, #{display_value(obj["current_owner"], field: "label")}"
+
+%section.container.main_content
+
+  %header
+    .institution.secondary= display_value(obj["current_owner"], field: "label", is_entity: true)
+    %h2.title= get_object_title(obj)
+
+  .row
+    / IMAGE AND DESCRIPTION
+    .col-lg-6
+      %figure.figure.classesenter-text
+        .image_background.d-flex.justify-content-center
+          =display_image(obj, placeholder: true, classes: "align-self-center")
+      %p=display_value by_classification(obj["subject_of"],"aat:300080091"), keep_newlines: true
+    
+    / METADATA SECTION
+    .col-lg-6
+      .row
+        / .col.offset-md-3
+        .artist_name= display_value(obj.dig("produced_by", "carried_out_by"), field: "label", join_char: ", ", is_entity: true)
+      
+      .row
+        .col.sm-9.col-md-6.col-lg-9.metadata
+          %dl.row<
+            =list_item "Alternate Titles", except_classification(obj["title"],["aat:300404670","aat:300404672"])
+            =list_item "Creation Date",    event_time_string(obj["produced_by"])
+            =list_item "Creation Place",   get_children(obj,"produced_by","took_place_at"), field: "label"
+            =list_item "Type",             by_general_purpose(obj["classified_by"],"aat:300179869"), only_first: true
+            =list_item "Medium",           by_classification(obj["referred_to_by"],"aat:300264237")
+            =list_item "Material",         obj["made_of"], field: "preferred_label", only_first: true
+            =list_item "Signature",        by_type(obj["shows_visual_item"],"Mark")
+            =list_item "Inscription",      by_type(obj["shows_visual_item"],"Inscription")
+            =list_item "Subject",          obj["depicts"], field: "label", only_first: true, is_entity: true
+            =list_item "Collection",       by_classification(obj["part_of"],"aat:300263534", "label")
+            =list_item "Technique",        nil 
+            =list_item "Current Location",  nil
+            =list_item "Period or Style",  by_general_purpose(obj["classified_by"],"aat:300015646")
+          
+          %dl.row<
+            =best_dimension_value(obj)
+          
+          %dl.row<
+            =list_item "Department",       by_classification(get_children(obj,"part_of","former_or_current_keeper"), "aat:300263534", "label")
+            =list_item "Accession #",      by_classification(obj["identified_by"],"aat:300312355")
+            =list_item "Object #",         by_classification(obj["identified_by"],"aat:300404621"), pluralize: false
+            =list_item "Credit Line",      by_classification(obj["referred_to_by"],"aat:300026687")
+            =list_item "Object Rights",    get_children(obj,"subject_to", "note"), pluralize: false
+
+          %dl.row<
+            =list_item "Partner URL", link_to_foaf(obj["homepage"])
+            =list_item "Linked Data URI",  external_link_to(obj["id"])
+            - json = settings.redis.get("aac:reverse_lookup:#{obj["id"]}")
+            =list_item "View LOD",   [external_link_to("#{json}.json", "as JSON-LD"), external_link_to("#{json}.ttl", "as Turtle")], join_char: "  ", pluralize: false
+
+        %sidebar.col.sm-3.col-md-6.col-lg-3.statistics
+          %dl.row<
+            =list_item obj.dig("toybox:other_works")&.count || "0",  "Other objects by this creator in this institution", width: 10
+            =list_item obj.dig("toybox:works_other_institution")&.count || "0", "Objects by this creator in other institutions", width: 10
+
+
+=# haml "toyboxes/palette".to_sym, layout: false
+
+
+:javascript
+  var el = document.querySelector(".min-border img");
+  if (el && (el.height >= 400 || el.width >= 400)) {
+    var thing = document.querySelector(".min-border")
+    thing.classList.remove("min-border");
+  }
+
+  console.log(#{obj.to_json});

@@ -1,0 +1,6 @@
+SELECT ?entity 
+WHERE { 
+  ?entity a <http://www.cidoc-crm.org/cidoc-crm/E22_Man-Made_Object>
+  FILTER isIRI(?entity)
+} 
+ORDER BY ?entity

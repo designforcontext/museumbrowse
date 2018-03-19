@@ -1,0 +1,25 @@
+values: "?entity_uri"
+
+ask: "?object crm:P52_has_current_owner ?entity_uri"
+
+construct: |
+  ?entity_uri toybox:most_common_artists _:common_artist.
+    _:common_artist toybox:common_artist ?actor_class;
+        toybox:common_artist_count ?object_count.
+where: |
+  {
+    {
+      SELECT ?actor_class (COUNT(?object) AS ?object_count)
+
+      WHERE {
+        ?object crm:P52_has_current_owner ?entity_uri.
+        ?object crm:P108i_was_produced_by ?production_event.
+        ?production_event crm:P14_carried_out_by ?actor_class.
+      }
+      GROUP BY ?actor_class
+
+      ORDER BY DESC(?object_count)
+      LIMIT 8
+    }
+    FILTER(BOUND(?actor_class))
+  }

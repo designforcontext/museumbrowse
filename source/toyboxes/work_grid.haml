@@ -1,0 +1,11 @@
+- split_works = split_by_owner(works)
+- split_works.each do |owner, owners_works|
+  %section.container-fluid.toybox.featured_items
+    .container
+      .row
+        .col
+          %h3 Objects at #{owner} (#{owners_works.count})
+      .row
+        - owners_works.each do |item|
+          .col-2
+            = haml "toyboxes/item_preview".to_sym, layout: false, locals: {id: item["id"]}  

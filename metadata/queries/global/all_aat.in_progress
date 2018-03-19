@@ -1,0 +1,32 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX aat: <http://vocab.getty.edu/aat/>
+
+SELECT DISTINCT ?aat_id WHERE {
+
+        { ?subject   crm:P2_has_type                      ?aat_id }
+  UNION { ?subject   crm:P101_had_as_general_use          ?aat_id }
+  UNION { ?subject   crm:P103_was_intended_for            ?aat_id }
+  UNION { ?subject   crm:P125_used_object_of_type         ?aat_id }
+  UNION { ?subject   crm:P126_employed                    ?aat_id }
+  UNION { ?subject   crm:P127_has_broader_term            ?aat_id }
+  UNION { ?subject   crm:P127i_has_narrower_term          ?aat_id }
+  UNION { ?subject   crm:P135_created_type                ?aat_id }
+  UNION { ?subject   crm:P137_exemplifies                 ?aat_id }
+  UNION { ?subject   crm:P150_defines_typical_parts_of    ?aat_id }
+  UNION { ?subject   crm:P150i_defines_typical_wholes_for ?aat_id }
+  UNION { ?subject   crm:P21_had_general_purpose          ?aat_id }
+  UNION { ?subject   crm:P32_used_general_technique       ?aat_id }
+  UNION { ?subject   crm:P42_assigned                     ?aat_id }
+  UNION { ?subject   crm:P45_consists_of                  ?aat_id }
+  UNION { ?subject   crm:P68_foresees_use_of              ?aat_id }
+  UNION { ?subject   crm:P72_has_language                 ?aat_id }
+  UNION { ?subject   crm:P91_has_unit                     ?aat_id }
+
+  
+  FILTER(regex(str(?aat_id), "^http://vocab.getty.edu/aat/" ) )
+} 
+ORDER BY ?aat_id
+

@@ -1,0 +1,8 @@
+- uri = settings.redis.get("aac:reverse_lookup:#{id}")
+- obj = JSON.parse(settings.redis.get("aac:uri:#{uri}"))["@graph"][0] rescue nil
+- if obj
+  .item_preview
+    = display_image(obj, caption: entity_label(obj), link: true, thumbnail: true, placeholder: true)
+-else
+  .item_preview
+    = display_image({}, caption: id, link: false, thumbnail: true, placeholder: true)

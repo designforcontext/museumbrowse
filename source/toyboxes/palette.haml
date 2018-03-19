@@ -1,0 +1,87 @@
+- content_for :javascript_data do
+  :javascript
+    window.paletteData = {
+          "@context": "http://palette.davidnewbury.com/vocab/context.json",
+          "profile": "http://palette.davidnewbury.com/vocab/iiifpal",
+          "label": "Palette automatically generated with a IIIF Palette Server",
+          "average": {
+            "closest": "#696969",
+            "color": "#7e6c5a"
+          },
+          "palette": [
+            {
+              "closest": "#556b2f",
+              "color": "#54554c"
+            },
+            {
+              "closest": "#696969",
+              "color": "#7b5f4d"
+            },
+            {
+              "closest": "#d2b48c",
+              "color": "#c8baa0"
+            },
+            {
+              "closest": "#808080",
+              "color": "#98896f"
+            },
+            {
+              "closest": "#556b2f",
+              "color": "#54402d"
+            }
+          ],
+          "reference-closest": "css3"
+        }
+
+%section.container-fluid.toybox
+  .container
+    .row
+      .col-12.col-lg-6
+        %h3 Palette
+      .col-12.col-lg-6.col-xl-4.offset-xl-2.hidden-md-down
+        %h5.secondary Similar Objects
+  .container
+    .row#palette
+      .col-8.col-lg-4
+        #palette_viz
+          <svg width='100%' height='100%'></svg>
+      .col-2.col-md-2.col-lg-1#palette-rgb-table
+        .red
+          %span.legend R:
+          %span.value 6
+        .green
+          %span.legend G:
+          %span.value 97
+        .blue
+          %span.legend B:
+          %span.value 159
+        .hex
+          %span.value #06619f
+      .col-2.col-md-2.col-lg-1#palette-cymk-table
+        .cyan
+          %span.legend C: 
+          %span.value 6
+          %span.legend> %
+        .yellow
+          %span.legend Y: 
+          %span.value 97
+          %span.legend> %
+        .magenta
+          %span.legend M:
+          %span.value 15
+          %span.legend> %
+        .black
+          %span.legend K:
+          %span.value 90
+          %span.legend> %
+      .col-12.col-lg-6.col-xl-4.offset-xl-2
+        %h5.secondary.hidden-lg-up Similar Objects
+        .row.align-items-center
+          .col
+            =image_tag "http://placehold.it/80x80", class: "img-fluid"
+          .col
+            =image_tag "http://placehold.it/80x80", class: "img-fluid"
+          .col
+            =image_tag "http://placehold.it/80x80", class: "img-fluid"
+          .col
+            =image_tag "http://placehold.it/80x80", class: "img-fluid"

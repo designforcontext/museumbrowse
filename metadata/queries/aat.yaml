@@ -1,0 +1,41 @@
+values: "?entity_uri"
+construct: |
+  ?entity_uri a crm:E55_Type;
+     rdfs:label                  ?label ;
+     dc:description              ?description ;
+     crm:P1_is_identified_by     _:aat_id_class ;
+     crm:P129i_is_subject_of     _:description_class ;
+     foaf:homepage               ?website_url .
+
+  ######### IDS #########
+  _:aat_id_class a crm:E42_Identifier ;
+    rdfs:label ?identifier ;
+    rdf:value  ?identifier ;
+    crm:P2_has_type aat:300404670 .
+
+  ######### Description ##########
+  _:description_class a crm:E33_Linguistic_Object ;
+    rdf:value ?description ;
+    crm:P2_has_type aat:300411780 .
+
+where: |  
+  {    
+    ?entity_uri skos:prefLabel ?label_with_lang.
+    FILTER(LANG(?label_with_lang) = "" || LANGMATCHES(LANG(?label_with_lang), "en"))
+    BIND(STR(?label_with_lang) AS ?label)
+
+    ######### BIOGRAPHY ##########
+    OPTIONAL {
+      ?entity_uri skos:scopeNote ?scope_class .
+      ?scope_class rdf:value ?description_with_lang;
+        dcterms:language aat:300388277.
+      BIND(STR(?description_with_lang) AS ?description)
+
+    }
+
+    ######### IDS #########
+    ?entity_uri dc:identifier ?identifier .
+
+    ####### HOMEPAGE #######
+    ?entity_uri rdfs:seeAlso ?website_url .
+  }

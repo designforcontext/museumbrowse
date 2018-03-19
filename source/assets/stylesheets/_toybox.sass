@@ -1,0 +1,34 @@
+.toybox
+  margin-bottom: 0
+  padding: 40px 0
+  color: $WELL_TEXT_COLOR
+  &:nth-child(odd)
+    background-color: $WELL_1_COLOR
+    thead
+      background-color: $WELL_1_HEADER_COLOR
+    table
+      td 
+        border-top-color: $WELL_1_HEADER_COLOR
+      border-bottom: 1px solid $WELL_1_HEADER_COLOR
+  &:nth-child(even)
+    background-color: $WELL_2_COLOR
+    thead
+      background-color: $WELL_2_HEADER_COLOR
+    table
+      td 
+        border-top-color: $WELL_2_HEADER_COLOR
+      border-bottom: 1px solid $WELL_2_HEADER_COLOR
+  table 
+    font-size: 80%
+    table-layout: fixed
+
+    th
+      text-transform: uppercase
+      font-weight: bold
+    th:last-child
+      width: 50%
+    a
+      color: $TABLE_LINK_COLOR
+      font-weight: bold
+    p:last-child
+      margin-bottom: 0

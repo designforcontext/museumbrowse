@@ -1,0 +1,16 @@
+values: "?entity_uri"
+
+ask: "?object crm:P52_has_current_owner ?entity_uri"
+
+construct: |
+  ?entity_uri toybox:related_artist_count ?artist_count.
+
+where: |
+  {
+    {  SELECT ( COUNT( DISTINCT ?artist) as ?artist_count) WHERE { 
+      ?object crm:P52_has_current_owner ?entity_uri;
+        crm:P108i_was_produced_by ?production_event .
+      ?production_event crm:P14_carried_out_by ?artist.
+      }
+    }
+  }

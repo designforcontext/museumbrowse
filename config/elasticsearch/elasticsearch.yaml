@@ -1,0 +1,7 @@
+path:
+  logs: .elasticsearch-cache/logs
+  data: .elasticsearch-cache/data
+cluster.name: aac-browse
+node.name: ${HOSTNAME}
+http.cors.enabled: true
+http.cors.allow-origin: "*"

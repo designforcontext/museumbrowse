@@ -1,0 +1,14 @@
+
+%section.container
+  .row 
+    .col-12.col-md-9
+      = text
+- if data["toybox"]
+  %section.container-fluid.toybox
+    .container
+      .row
+        .col-12
+          = data["toybox"]
+- if data["javascript"]
+  - content_for :javascripts do
+    %script{type: 'text/javascript'}=data["javascript"]

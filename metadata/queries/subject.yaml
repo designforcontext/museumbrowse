@@ -1,0 +1,9 @@
+values: "?entity_uri"
+construct: |
+    ?entity_uri rdfs:label ?label;
+    rdf:type ?type;
+    crm:P62i_is_depicted_by ?thing.
+where: |      
+  ?entity_uri rdfs:label ?label; 
+    rdf:type ?type.
+  ?thing crm:P62_depicts ?entity_uri.

@@ -1,0 +1,30 @@
+{
+  "extends": [
+    "airbnb",
+    "plugin:flowtype/recommended"
+  ],
+  "plugins": [
+    "flowtype",
+    "compat"
+  ],
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+
+  "rules": {
+    "space-infix-ops": "off",
+    "eol-last": "off",
+    "no-mixed-operators": "off",
+    "semi": [2, "never"],
+    "no-unexpected-multiline": "error",
+    "compat/compat": "error",
+    "spaced-comment": ["error", "always", { "exceptions": ["*"] }],
+    "quotes": ["error", "double"],
+    "object-curly-spacing": ["error", "never"],
+    "no-multi-spaces": ["error", { "exceptions": { "VariableDeclarator": true }}],
+    "dot-notation": ["error", { "allowPattern": "^_.+$" }],
+    "brace-style": ["error", "stroustrup"],
+    "indent": ["error", 2, {"FunctionDeclaration": {"parameters": "first"}}]
+  } 
+}

@@ -1,0 +1,114 @@
+- content_for :title_text do
+  = get_actor_name(obj)
+  
+%section.container.main_content
+  
+  %header
+    %h2= get_actor_name(obj)
+    -if val = display_value(obj["contact_point"], field: "value")
+      .address.secondary=val
+
+  .row
+    .col-md-6
+      -if bio = get_actor_bio(obj)
+        %p= bio
+      -if bio = by_classification(obj.dig("subject_of"),"aat:300080091")
+        %p= display_value(bio, keep_newlines: true) 
+      -if bio = by_classification(obj.dig("subject_of"),"toybox:aat_description")
+        %h5 About the Dataset
+        %p= display_value(bio, keep_newlines: true) 
+
+    .col-md-5.offset-md-1
+
+      // Instititution-specific section
+      - if obj["schema:logo"]
+        %section.row
+          - if val = obj["schema:logo"]
+            .col-12.text-center.logo_lockup
+              =image_tag obj.dig("schema:logo"), class: 'img-fluid img-thumbnail'
+          - if obj["toybox:related_artwork_count"]
+            .col.stat.text-center
+              #{obj["toybox:related_artwork_count"]["@value"].to_i.to_s(:delimited)}
+              .stat_label Items
+          - if obj["toybox:related_artist_count"]
+            .col.stat.text-center
+              #{obj["toybox:related_artist_count"]["@value"].to_i.to_s(:delimited)}
+              .stat_label Creators
+          - if obj["toybox:latest_artwork_date"] && obj["toybox:earliest_artwork_date"]
+            .col.stat.text-center
+              #{obj["toybox:earliest_artwork_date"]["@value"]} — #{obj["toybox:latest_artwork_date"]["@value"]}
+              .stat_label Date Range
+      
+      .metadata
+        %dl.row<
+          =list_item "Alternate Names", except_classification(obj.dig("actor_identified_by"),["aat:300404670","aat:300404672"])
+          =list_item "Birth", event_time_string(obj.dig("brought_into_existence_by"))
+          =list_item "Birth Location", event_place_string(obj.dig("brought_into_existence_by"))
+          =list_item "Death", event_time_string(obj.dig("taken_out_of_existence_by"))
+          =list_item "Death Location", event_place_string(obj.dig("taken_out_of_existence_by"))
+          =list_item "Gender", by_classification(obj.dig("classified_as"),"aat:300055147", "label"), downcase: true, only_first: true
+          =list_item "Nationality", by_classification(obj.dig("member_of"),"aat:300379842", "label"), only_first: true
+        - if obj["toybox:related_actors"]
+          = haml "toyboxes/related_actors".to_sym, layout: false, locals: {people: obj["toybox:related_actors"]}
+        %dl.row<
+          =list_item "Partner URL", link_to_foaf(obj["homepage"])
+          =list_item "Linked Data URI",  external_link_to(obj["id"])
+          =list_item "External Authority", obj.dig("exact_match"), is_link: true, field: "id"
+          - json = settings.redis.get("aac:reverse_lookup:#{obj["id"]}")
+          =list_item "View LOD",   [external_link_to("#{json}.json", "as JSON-LD"), external_link_to("#{json}.ttl", "as Turtle")], join_char: "  ", pluralize: false
+ 
+        // This is an alternate option for the first toybox.
+        - if obj.dig("depicted_by") && false
+          %dl.row<
+            =list_item "Depicted In", obj.dig("depicted_by"), pluralize: false, is_entity: true, field: "entity"
+ 
+
+- if obj["depicted_by"]
+  %section.container-fluid.toybox.featured_items
+    .container
+      .row
+        .col
+          %h3="Selected Images of #{get_actor_name(obj)}"
+      .row.align-items-center
+        - [obj["depicted_by"]].flatten(1).first(6).each do |item|
+          .col-2
+            = haml "toyboxes/item_preview".to_sym, layout: false, locals: {id: item["id"]}  
+
+- if obj["toybox:created_by"]
+  = haml "toyboxes/work_grid".to_sym, layout: false, locals: {works: obj["toybox:created_by"], title: "Objects Created by #{obj["label"].first}"}
+
+
+- if obj["toybox:featured_items"]
+  %section.container-fluid.toybox.featured_items
+    .container
+      .row
+        .col
+          %h3 Featured Objects
+      .row.align-items-center
+        - obj["toybox:featured_items"].first(12).each do |item|
+          .col-2
+            = haml "toyboxes/item_preview".to_sym, layout: false, locals: {id: item["id"]}  
+
+- if obj["toybox:most_common_artists"]
+  %section.container-fluid.toybox.featured_items
+    .container
+      .row
+        .col
+          %h3 Most Common Creators
+      .row.align-items-center
+        - obj["toybox:most_common_artists"].first(6).each do |item|
+          - id = item["toybox:common_artist"]["id"]
+          - uri = settings.redis.get("aac:reverse_lookup:#{id}")
+          - common_artist = JSON.parse(settings.redis.get("aac:uri:#{uri}"))["@graph"][0] rescue nil
+          - if common_artist
+            .col-2
+              - count = item["toybox:common_artist_count"]["@value"]
+              - caption = "#{first_or_only common_artist["label"]}<br/>#{count} items"
+              .item_preview
+                = display_image(common_artist, caption: caption, link: true, thumbnail: true, placeholder: true)
+
+
+:javascript
+  console.log(#{obj.to_json});
+
+

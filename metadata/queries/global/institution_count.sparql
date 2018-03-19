@@ -1,0 +1,14 @@
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+
+SELECT (COUNT (DISTINCT ?entity) as ?institution_count)
+
+WHERE { 
+  ?thing crm:P52_has_current_owner ?entity.
+  {?entity a <http://www.cidoc-crm.org/cidoc-crm/E39_Actor>} UNION
+  {?entity a <http://www.cidoc-crm.org/cidoc-crm/E74_Group>} UNION
+  {?entity a <http://www.cidoc-crm.org/cidoc-crm/E40_Legal_Body>}
+  FILTER isIRI(?entity)
+  FILTER NOT EXISTS {?entity <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://vocab.getty.edu/aat/300379842>}
+  FILTER NOT EXISTS {?entity <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://vocab.getty.edu/aat/300263534>}
+}
+ORDER BY ?entity

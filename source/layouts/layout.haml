@@ -1,0 +1,89 @@
+!!!
+%html
+  %head
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    %title
+      - if content_for? :title_text
+        = yield_content :title_text  
+      -else 
+        = defined?(data) && data.dig("title") || "Browse"
+      \| American Art Collaborative
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    %link{rel: "stylesheet", type:"text/css", href: "https://fonts.googleapis.com/css?family=Josefin+Sans:100,300,400,700|Open+Sans|Raleway"}
+
+    %link{rel: "stylesheet", type:"text/css", href: "/css/site.css"}
+
+  %body
+    %header#top_header
+      .container
+        .row
+          .col-md
+            =link_to "AAC Demonstration Prototype" , "/index.html"
+          %nav.col-md
+            %ul.header_items.list-inline
+              %li.list-inline-item
+                = link_to '/about.html' do
+                  =svg_icon("about")                  
+                  About the AAC
+              %li.list-inline-item
+                = link_to '/notices.html' do
+                  / # =svg_icon("about")                  
+                  Notices
+              / %li.list-inline-item
+              /   = link_to '#' do
+              /     =svg_icon("settings")
+              /     Settings
+
+    %header#main_header
+      .container
+        .row
+          .col
+            %h1=link_to "American Art Collaborative", "/index.html"
+          .col-4.searchbox_holder
+            %label.sr-only{for: "searchbox"} Search
+            .input-group
+              .input-group-addon#search_button= svg_icon("search")
+              %input#searchbox.form-control{type: "text"}
+
+        / %nav.row.d-flex.align-items-end
+        /   .col-8
+        /     %ul.list-inline
+        /       %li.list-inline-item= link_to "Home", '/index.html'
+        /       %li.list-inline-item= link_to "About", '/about.html'
+        /       %li.list-inline-item= link_to "Institutions", '/review.html'
+        /       %li.list-inline-item= link_to "Featured Creators", '#'
+      
+    %main= yield 
+
+    %footer.footer
+      .container  
+        - if content_for? :footer
+          = yield_content :footer  
+        .row.flex-items-xs-center
+          .col
+            .copyright
+              © 2017 Design for Context • ALl original content under #{link_to("CC-BY", "https://creativecommons.org/licenses/by/4.0/", target: '_blank')} & #{link_to("MIT", "https://opensource.org/licenses/MIT", target: '_blank')} licenses. • For more information see the #{link_to("notices", "/notices.html")}.
+
+    - if content_for? :javascript_data
+      = yield_content :javascript_data  
+    <script src="#{@jspath}js/manifest.js"></script>
+    <script src="#{@jspath}js/vendor.js"></script>
+    <script src="#{@jspath}js/main.js"></script>
+    - if content_for? :javascripts
+      = yield_content :javascripts 
+
+    %script
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-1893282-10', 'auto');
+      ga('send', 'pageview');
+
+
